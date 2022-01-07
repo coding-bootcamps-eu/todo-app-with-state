@@ -6,6 +6,11 @@ class TodoApp {
   };
 
   constructor() {
+    this.initEventHandlers();
+    this.render();
+  }
+
+  initEventHandlers = () => {
     document
       .querySelector("#input-todo")
       .addEventListener("input", this.handleInputEvent);
@@ -18,9 +23,7 @@ class TodoApp {
     document
       .querySelector("#remove-button")
       .addEventListener("click", this.handleRemoveDoneEvent);
-
-    this.render();
-  }
+  };
 
   handleInputEvent = () => {
     const inputElement = document.querySelector("#input-todo");
@@ -50,6 +53,10 @@ class TodoApp {
     this.state.todos = onlyOpenTodos;
     this.render();
   };
+
+  /**
+   * Render functions
+   */
 
   renderCheckbox = (todo) => {
     const checkboxIsDone = document.createElement("input");
