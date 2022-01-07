@@ -1,47 +1,96 @@
-class TodoApp{
-    
-    state = {
-        filter: "all",
-        input_value: "",
-        todos: [
-            {text: "Wäsche waschen", isDone: false}
-        ]
+class TodoApp {
+  state = {
+    filter: "all",
+    input_value: "",
+    todos: [{ text: "Wäsche waschen", isDone: false }],
+  };
+
+  constructor() {
+    document
+      .querySelector("#input-todo")
+      .addEventListener("input", this.handleInputEvent);
+    document
+      .querySelector("#filter-section")
+      .addEventListener("input", this.handleCheckboxEvent);
+    document
+      .querySelector("#add-todo-button")
+      .addEventListener("click", this.handleAddTodo);
+    document
+      .querySelector("#remove-button")
+      .addEventListener("click", this.handleRemoveDoneEvent);
+
+    this.render();
+  }
+
+  handleInputEvent = () => {
+    const inputElement = document.querySelector("#input-todo");
+    const currentValue = inputElement.value;
+    this.state.input_value = currentValue;
+    this.render();
+  };
+
+  handleCheckboxEvent = (event) => {
+    const clickedCheckbox = event.target;
+    const filterMode = clickedCheckbox.getAttribute("data-filter");
+    this.state.filter = filterMode;
+    this.render();
+  };
+
+  handleAddTodo = () => {
+    const newTodoText = this.state.input_value;
+    const newTodo = { text: newTodoText, isDone: false };
+    this.state.todos.push(newTodo);
+    this.render();
+  };
+
+  handleRemoveDoneEvent = () => {
+    const onlyOpenTodos = this.state.todos.filter(
+      (todo) => todo.isDone === false
+    );
+    this.state.todos = onlyOpenTodos;
+    this.render();
+  };
+
+  renderCheckbox = (todo) => {
+    const checkboxIsDone = document.createElement("input");
+    checkboxIsDone.type = "checkbox";
+
+    checkboxIsDone.addEventListener("input", () => {
+      todo.isDone = !todo.isDone;
+      this.render();
+    });
+
+    if (todo.isDone === true) {
+      checkboxIsDone.checked = "checked";
     }
 
-    constructor(){
-        document.querySelector('#input-todo').addEventListener('input', this.handleInputEvent);
-        document.querySelector('#filter-section').addEventListener('input', this.handleCheckboxEvent)
-        document.querySelector('#add-todo-button').addEventListener('click', this.handleAddTodo)
-        document.querySelector('#remove-button').addEventListener('click', this.handleRemoveDoneEvent)
+    return checkboxIsDone;
+  };
+
+  renderLiElement = (todo) => {
+    const liElem = document.createElement("li");
+
+    if (todo.isDone === true) {
+      liElem.style.textDecoration = "line-through";
     }
+    liElem.textContent = todo.text;
+    return liElem;
+  };
 
-    handleInputEvent(){
-        const inputElement = document.querySelector('#input-todo');
-        const currentValue = inputElement.value;
-        this.state.input_value = currentValue;
-    }
+  render = () => {
+    const todoList = document.querySelector("#todo-list");
+    // delete all rendered todos
 
-    handleCheckboxEvent(event){
-        const checkbox = event.target;
-        const filterMode = checkbox.getAttribute('data-filter');
-        this.state.filter = filterMode;
-    }
+    todoList.innerHTML = "";
+    // render todos
+    this.state.todos.forEach((todo) => {
+      const liElem = this.renderLiElement(todo);
+      const checkboxElem = this.renderCheckbox(todo);
 
-    handleAddTodo(){
-        const newTodoText = this.state.input_value;
-        const newTodo = {text: newTodoText, isDone: false};
-        this.state.todos.push(newTodo);
-    }
-
-    handleRemoveDoneEvent(){
-        const onlyOpenTodos = this.state.todos.filter((todo) => todo.isDone === false);
-        this.state.todos = onlyOpenTodos;
-    }
-
-
-    render(){
-
-    }
+      liElem.appendChild(checkboxElem);
+      todoList.appendChild(liElem);
+    });
+  };
 }
 
 const app = new TodoApp();
