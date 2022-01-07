@@ -34,7 +34,7 @@ class TodoApp {
 
   handleCheckboxEvent = (event) => {
     const clickedCheckbox = event.target;
-    const filterMode = clickedCheckbox.getAttribute("data-filter");
+    const filterMode = clickedCheckbox.value;
     this.state.filter = filterMode;
     this.render();
   };
