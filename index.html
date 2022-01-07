@@ -10,11 +10,11 @@
 <body>
     <h1>Todo App</h1>
     <article>
-            <section>
+            <section id="filter-section">
                 <h2>Filter</h2>
-                <input type="radio" name="filter-checkbox" id="all-radio"><label for="all-radio">All</label>
-                <input type="radio" name="filter-checkbox" id="open-radio"><label for="open-radio">Open</label>
-                <input type="radio" name="filter-checkbox" id="done-radio"><label for="done-radio">Done</label>
+                <input type="radio" name="filter-checkbox" id="all-radio" data-filter="all"><label for="all-radio">All</label>
+                <input type="radio" name="filter-checkbox" id="open-radio" data-filter="open"><label for="open-radio">Open</label>
+                <input type="radio" name="filter-checkbox" id="done-radio" data-filter="done"><label for="done-radio">Done</label>
             </section>
             <section>
                 <button id="remove-button">Remove done Todos</button>
